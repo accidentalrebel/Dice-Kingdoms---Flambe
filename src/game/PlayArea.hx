@@ -37,6 +37,52 @@ class PlayArea extends Component
 				playAreaArray[col].push(hexaTile);
 			}
 		}
+		
+		// We set the neighbors of each hexaTile
+		for ( col in 0...playAreaCols+1 )
+		{
+			for ( row in 0...playAreaRows+1 )
+			{
+				var currentHexaTile : HexaTile = playAreaArray[col][row];
+				
+				// We then get the surrounding of this tile
+				// First the bottom neighbor
+				if ( row + 1 <= playAreaRows )			
+					currentHexaTile.bottom = playAreaArray[col][row + 1];
+				// We get the top neighbor
+				if ( row - 1 >= 0 )
+					currentHexaTile.top = playAreaArray[col][row - 1];
+					
+				if ( col % 2 == 0 ) 		// If even
+				{
+					if ( col - 1 >= 0 )
+					{
+						currentHexaTile.topLeft = playAreaArray[col - 1][row];
+						currentHexaTile.bottomLeft = playAreaArray[col - 1][row + 1];
+					}
+					
+					if ( col + 1 < playAreaCols )
+					{
+						currentHexaTile.topRight = playAreaArray[col + 1][row];					
+						currentHexaTile.bottomRight = playAreaArray[col + 1][row + 1];
+					}
+				}
+				else						// If odd
+				{
+					if ( col - 1 >= 0 )
+					{
+						currentHexaTile.topLeft = playAreaArray[col - 1][row - 1];
+						currentHexaTile.bottomLeft = playAreaArray[col - 1][row];
+					}
+					
+					if ( col + 1 < playAreaCols)
+					{
+						currentHexaTile.topRight = playAreaArray[col + 1][row - 1];
+						currentHexaTile.bottomRight = playAreaArray[col + 1][row];
+					}
+				}
+			}
+		}
 	}
 	
 }

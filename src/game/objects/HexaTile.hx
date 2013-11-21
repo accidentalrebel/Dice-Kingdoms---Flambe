@@ -17,6 +17,14 @@ class HexaTile extends Component
 	var col:Int = 0;
 	var row:Int = 0;
 	
+	// Neighbors
+	public var top : HexaTile = null;
+	public var topRight : HexaTile= null;
+	public var bottomRight : HexaTile = null;
+	public var bottom : HexaTile = null;
+	public var bottomLeft : HexaTile = null;
+	public var topLeft : HexaTile = null;
+	
 	public function new() 
 	{
 	}
