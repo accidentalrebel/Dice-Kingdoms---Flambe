@@ -39,7 +39,19 @@ class PlayerManager extends Component
 			tNumOfHumans--;
 		}
 		
-		//setCurrentPlayer(1);
+		setCurrentPlayer(1);
+	}
+	
+	public function getPlayer(playerNum : Int) 
+	{
+		return playerList[playerNum-1];
+	}
+	
+	private function setCurrentPlayer(playerNumber:Int) 
+	{
+		currentPlayerNumber = playerNumber;
+		currentPlayer = getPlayer(currentPlayerNumber);
+		//Registry.gameGUI.playerIndicator.color = getPlayer(currentPlayerNumber).territoryColor;
 	}
 	
 }
