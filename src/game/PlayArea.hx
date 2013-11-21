@@ -139,8 +139,7 @@ class PlayArea extends Component
 			var member : HexaTile = tMember;
 			if ( member != null )
 			{
-				member.sprite.alpha._ = Registry.playerManager.getPlayer(playerNum).territoryColor;
-				//member.setCoverColorTo(Registry.playerManager.getPlayer(playerNum).territoryColor);
+				member.setCoverColorTo(Registry.playerManager.getPlayer(playerNum).territoryColor);
 				//member.drawBoundaries(Registry.playerManager.getPlayer(playerNum).territoryColor);
 			}
 		}

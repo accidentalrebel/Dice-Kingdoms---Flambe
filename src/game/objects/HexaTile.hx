@@ -49,7 +49,7 @@ class HexaTile extends Component
 		this.col = col;
 		this.row = row;
 		
-		sprite = new ImageSprite(Registry.pack.getTexture("hexaTile"));
+		sprite = new ImageSprite(Registry.pack.getTexture("hexaTiles/hexaTile"));
 		owner.addChild(new Entity().add(sprite));
 		
 		var xPos = 0.0;
@@ -78,5 +78,10 @@ class HexaTile extends Component
 		label.setXY(sprite.x._, sprite.y._);
 		owner.addChild(new Entity().add(label));
 		//updateLabel(textToDisplay);
+	}
+	
+	public function setCoverColorTo(colorToUse : String) 
+	{
+		sprite.texture = Registry.pack.getTexture("hexaTiles/hexaTile-" + colorToUse);
 	}
 }

@@ -8,7 +8,7 @@ import flambe.Component;
 class Player extends Component
 {
 	public var territories:Array<Int>;
-	public var territoryColor:Int;
+	public var territoryColor:String;
 	public var isHuman:Bool = false;
 	//public var ai:EnemyAI;	
 	public var playerNum:Int;
