@@ -2,6 +2,7 @@ package game;
 import flambe.Component;
 import flambe.Entity;
 import game.managers.InputManager;
+import game.managers.PlayerManager;
 
 /**
  * ...
@@ -20,6 +21,9 @@ class Game extends Component
 	{
 		super.onAdded();
 		owner.add(Registry.inputManager = new InputManager());
+		owner.add(Registry.playerManager = new PlayerManager());
+		
 		owner.addChild(new Entity().add(playArea = new PlayArea()));
+		Registry.playerManager.initialize();
 	}
 }
