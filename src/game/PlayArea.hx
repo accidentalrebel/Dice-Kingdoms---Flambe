@@ -11,6 +11,7 @@ class PlayArea extends Component
 {
 	public static var playAreaCols : Int = 42;
 	public static var playAreaRows : Int = 26;
+	
 	var playAreaArray:Array<Array<HexaTile>>;
 
 	public function new() 
@@ -83,6 +84,78 @@ class PlayArea extends Component
 				}
 			}
 		}
+		
+		setupTerritories();
+	}
+	
+	function setupTerritories() 
+	{
+		var centerBaseList : Array<HexaTile> = new Array<HexaTile>();
+		var currentTerritoryNumber : Int = 0;
+		var recursiveMax : Int = 5;
+		var recursiveCount : Int = 0;
+		var alpha : Float = 0;
+		
+		function markTerritory(hexaTile : HexaTile, canOverride : Bool = false) : Bool
+		{  
+			if (hexaTile == null || hexaTile.isATerritory)
+				return false;
+			
+			hexaTile.isATerritory = true;	
+			hexaTile.territoryNumber = currentTerritoryNumber;
+			
+			return true;
+		}
+		
+		function setAsMainBase(hexaTile : HexaTile) : Bool
+		{
+			if (hexaTile == null)
+				return false;
+			
+			markTerritory(hexaTile); 
+			hexaTile.isMainBase = true;
+			
+			return true;
+		}	
+		
+		function markMainBase(centerTile : HexaTile, centerBaseList : Array<HexaTile>)
+		{	
+			centerTile.isCenter = true;		
+			
+			centerBaseList.push(centerTile);
+			setAsMainBase(centerTile);
+			setAsMainBase(centerTile.top);
+			setAsMainBase(centerTile.topRight);
+			setAsMainBase(centerTile.bottomRight);
+			setAsMainBase(centerTile.bottom);
+			setAsMainBase(centerTile.bottomLeft);
+			setAsMainBase(centerTile.topLeft);
+			
+			centerTile.setupLabel("1");
+		}
+		
+		function setupTerritory(rollX : Int, rollY : Int, centerBaseList : Array<HexaTile>)
+		{	
+			// We move the center slightly to make it more random
+			var rollXModifier = Std.random(2) - 1;
+			var rollYModifier = Std.random(2) - 1;
+			
+			rollX = rollX + rollXModifier;
+			rollY = rollY + rollYModifier;
+		  
+			var currentHexaTile = playAreaArray[rollX][rollY];
+			markMainBase(currentHexaTile, centerBaseList);
+		}
+		
+		// We initialize the territories
+		for (row in 1...(Math.floor(playAreaRows/5) + 1))
+		{
+			for (col in 1...(Math.floor(playAreaCols/5) + 1))
+			{  
+				setupTerritory((col * 5)-1, (row * 5)-1, centerBaseList);
+				currentTerritoryNumber += 1;
+			}
+        }
 	}
 	
 }
