@@ -22,6 +22,7 @@
   <build>
     <option directives="" />
     <option flashStrict="True" />
+    <option noInlineOnDebug="False" />
     <option mainClass="" />
     <option enabledebug="True" />
     <option additional="" />
@@ -41,6 +42,7 @@
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="build" />
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand>cmd /c flambe build --$(BuildConfig)</preBuildCommand>

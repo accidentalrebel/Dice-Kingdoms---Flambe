@@ -37,6 +37,9 @@ class Main
         plane.x._ = IEMainStage.width - plane.getNaturalWidth();
         plane.y.animateTo(200 * IEMainStage.resolutionModifier, 6);
         IEMainStage.addChild(new Entity().add(plane));
+		IEMainStage.addChild(new Entity().add(new Game()));
+		
+		Registry.pack = pack;
 		
 		System.pointer.down.connect(handlePointerDown);
     }
