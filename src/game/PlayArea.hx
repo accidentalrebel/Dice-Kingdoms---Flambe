@@ -134,6 +134,77 @@ class PlayArea extends Component
 			centerTile.setupLabel("1");
 		}
 		
+		function setupCenter(currentHexaTile : HexaTile)
+		{
+			if (currentHexaTile == null)
+				return false;
+      
+			markTerritory(currentHexaTile);
+			markTerritory(currentHexaTile.top, true);
+			markTerritory(currentHexaTile.bottom);
+			markTerritory(currentHexaTile.topLeft);
+			markTerritory(currentHexaTile.topRight);
+			markTerritory(currentHexaTile.bottomLeft);
+			markTerritory(currentHexaTile.bottomRight);
+			
+			return true;
+		}
+		
+		function recursiveExpand(currentHexaTile : HexaTile)
+		{
+			if (currentHexaTile == null || recursiveCount > recursiveMax
+				|| ( currentHexaTile.isATerritory 
+					&& currentHexaTile.territoryNumber != currentTerritoryNumber))
+				return null;   
+				
+			recursiveCount += 1;
+			var neighborList : Array<HexaTile> = new Array<HexaTile>();
+		
+			if (currentHexaTile.top != null 
+				&& !currentHexaTile.top.isPicked )
+				neighborList.push( currentHexaTile.top);
+			
+			if (currentHexaTile.topRight != null 
+				&& !currentHexaTile.topRight.isPicked)
+				neighborList.push( currentHexaTile.topRight);
+			
+			if (currentHexaTile.bottomRight != null
+				&& !currentHexaTile.bottomRight.isPicked)
+				neighborList.push( currentHexaTile.bottomRight);
+			
+			if (currentHexaTile.bottom != null
+				&& !currentHexaTile.bottom.isPicked)
+				neighborList.push( currentHexaTile.bottom);
+			
+			if (currentHexaTile.bottomLeft != null
+				&& !currentHexaTile.bottomLeft.isPicked)
+				neighborList.push( currentHexaTile.bottomLeft);
+			
+			if (currentHexaTile.topLeft != null
+				&& !currentHexaTile.topLeft.isPicked)
+				neighborList.push( currentHexaTile.topLeft);
+			
+		    if (neighborList == null || neighborList.length <= 0
+				|| ( currentHexaTile.isATerritory 
+					&& currentHexaTile.territoryNumber != currentTerritoryNumber))
+				return null;
+			
+		    var roll : Int = Std.random(neighborList.length);
+		    var pickedNeighbor : HexaTile = neighborList[roll];
+		    
+		    setupCenter(pickedNeighbor);
+		    pickedNeighbor.isPicked = true;
+		    return recursiveExpand(pickedNeighbor);
+		}
+		
+		function expandBase(centerTile : HexaTile)
+		{			
+			recursiveCount = 0;
+			recursiveExpand(centerTile.topLeft);
+			recursiveCount = 0;
+			recursiveExpand(centerTile.bottomRight);			
+		}
+		
 		function setupTerritory(rollX : Int, rollY : Int, centerBaseList : Array<HexaTile>)
 		{	
 			// We move the center slightly to make it more random
@@ -156,6 +227,15 @@ class PlayArea extends Component
 				currentTerritoryNumber += 1;
 			}
         }
+		
+		// We expand the territories
+		var count : Int = 0;
+		for ( centerBase in centerBaseList )
+		{
+			currentTerritoryNumber = count;
+			expandBase(centerBase);
+			count++;
+		}
 	}
 	
 }

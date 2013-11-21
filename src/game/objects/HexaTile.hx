@@ -69,6 +69,7 @@ class HexaTile extends Component
 	{
 		label = new TextSprite(new Font(Registry.pack, "fonts/AdventureSubtitles"), textToDisplay);
 		label.setScale(0.4);
+		
 		//, this.x, this.y, 30);
 		//label.alignment = "center";
 		//label.size = 20;
