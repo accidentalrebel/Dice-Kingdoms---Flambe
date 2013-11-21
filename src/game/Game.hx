@@ -1,6 +1,7 @@
 package game;
 import flambe.Component;
 import flambe.Entity;
+import game.managers.InputManager;
 
 /**
  * ...
@@ -18,6 +19,7 @@ class Game extends Component
 	override public function onAdded()
 	{
 		super.onAdded();
+		owner.add(Registry.inputManager = new InputManager());
 		owner.addChild(new Entity().add(playArea = new PlayArea()));
 	}
 }
