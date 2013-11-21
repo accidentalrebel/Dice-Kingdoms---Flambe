@@ -10,9 +10,14 @@ class Game extends Component
 {
 	var playArea:PlayArea;
 
-	public function new() 
+	public function new()
 	{
-		owner.addChild(new Entity().add(playArea = new PlayArea()));
+		
 	}
 	
+	override public function onAdded()
+	{
+		super.onAdded();
+		owner.addChild(new Entity().add(playArea = new PlayArea()));
+	}
 }

@@ -28,6 +28,8 @@ class Main
 
     private static function onSuccess (pack :AssetPack)
     {
+		Registry.pack = pack;
+		
         // Add a solid color background
         var background = new FillSprite(0x202020, IEMainStage.width, IEMainStage.height);
         IEMainStage.addChild(new Entity().add(background));
@@ -38,8 +40,6 @@ class Main
         plane.y.animateTo(200 * IEMainStage.resolutionModifier, 6);
         IEMainStage.addChild(new Entity().add(plane));
 		IEMainStage.addChild(new Entity().add(new Game()));
-		
-		Registry.pack = pack;
 		
 		System.pointer.down.connect(handlePointerDown);
     }
