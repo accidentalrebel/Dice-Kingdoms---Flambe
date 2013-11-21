@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <title>Nick Game</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon-precomposed" href="logo.png">
+  <link rel="shortcut icon" href="logo.png">
+  <style>
+    body {
+		background: white url("stripe.png") repeat-x top center;
+		text-align: center;
+		margin: 0px 0 20px;
+		color: #404040;
+		font-family: sans-serif;
+		font-size: 10pt;
+    }
+    #content {
+		height: 560px;
+		width: 960px;
+		margin: inherit;
+		box-shadow: 10px 10px 5px #888888;
+    }
+	#header {
+		font-weight: bold;
+		padding: 5px;
+		color: #7069b2;
+	}
+	
+		#header p {
+			margin: 2px 0 0 0;
+		}
+  </style>	
+	<script type="text/javascript" src="scripts/swfobject.js"></script>
+	<script type="text/javascript">
+		swfobject.embedSWF("targets/main-flash.swf", "content", "960", "560", "9.0.0", "", {}, {wmode:"direct"});
+	</script>
+</head>
+<body>
+	<div id="flashContainer">
+		<div id="header">
+			<img src="logo.png" /><br />
+			<p>Nickelodeon Game - Prototype Version 1.0</p>
+		</div>
+		<div id="content">	
+			 <p>You must have Flash Installed to view this application.</p>	
+		</div>
+	</div>
+</body>
+<!-- Start Playnomics API -->
+<script type="text/javascript">
+	console.log("Playnomics javascript started");
+
+	function setupPlaynomics(appID, appName, tPlayerID)
+	{
+		console.log("Setting up playnomics: " + appID + ":" + appName + " with player: " + tPlayerID);
+		_pnConfig={};
+		_pnConfig.userId=tPlayerID;
+
+		_pnConfig.onLoadComplete = function() {		
+			console.log("has finished setting up!");
+			sendMilestone("CUSTOM1")
+			pnUserInfo("update", null, null, null, null, appName, null, null, null);
+		};
+		
+		var _pnAPIURL=document.location.protocol+"//js.a.playnomics.net/v1/api?a="+appID,
+		_pnAPI=document.createElement("script");
+		_pnAPI.type="text/javascript";
+		_pnAPI.async=true;
+		_pnAPI.src=_pnAPIURL;
+			
+		document.body.appendChild(_pnAPI);
+	}
+
+	function sendMilestone(milestoneName)
+	{		
+		var milestoneId = generateLargeId();
+		console.log("milestoneID: " + milestoneId + " milestoneName: " + milestoneName)
+		pnMilestone(milestoneId, milestoneName);
+	}
+
+	function generateLargeId()
+	{	
+		return Math.floor(Math.random() * (Math.pow(2, 63) - 1));
+	}
+</script>
+<!-- End Playnomics API -->
+</html>

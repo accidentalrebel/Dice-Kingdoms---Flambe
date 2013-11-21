@@ -1,0 +1,1 @@
+copy flambeYamlFlash.yaml flambe.yaml && copy web\runFlash.html web\index.html

@@ -1,0 +1,1 @@
+copy flambeYamlHTML5.yaml flambe.yaml && copy web\runHTML5.html web\index.html

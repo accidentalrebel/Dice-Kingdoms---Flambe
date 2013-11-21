@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NICK Game</title>
+</head>
+<body style="background: white;">
+	<div id="embedTarget"></div>
+	<script src="scripts/jsembed.js"></script> 
+	<script type="text/javascript"> 
+		var params = {
+			base: "",
+			api: "flambe",
+			autoscale: "true",
+			libs: ["flambe.js"]
+		};
+		jsembed.embed("flambe.js", "embedTarget", "960", "560", params, {});
+	</script>
+</body>
+</html>
