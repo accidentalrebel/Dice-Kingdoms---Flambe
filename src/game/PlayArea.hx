@@ -2,6 +2,8 @@ package game;
 import flambe.Component;
 import flambe.Entity;
 import game.objects.HexaTile;
+import game.objects.Player;
+import game.objects.Territory;
 
 /**
  * ...
@@ -86,6 +88,62 @@ class PlayArea extends Component
 		}
 		
 		setupTerritories();
+	}
+	
+	public function assignTerritories() 
+	{
+		var pickedTerritories : Array<Int> = new Array<Int>();
+		
+		function getRandomTerritoryNum()
+		{
+			var roll : Int = 0;
+			while (true)
+			{
+				roll = Std.random(Registry.territoryManager.territoryList.length);
+				if ( !Lambda.has(pickedTerritories, roll) )
+					break;
+			}
+			
+			pickedTerritories.push(roll);
+			return roll;
+		}
+      
+		Registry.territoryPerPlayer = Math.floor(Registry.maxTerritories / Registry.playerManager.playerList.length);
+		for (playerNum in 1...Registry.playerManager.playerList.length+1 )
+	    {
+			for (j in 0...Registry.territoryPerPlayer)
+			{
+				Registry.playArea.assignTerritory(getRandomTerritoryNum(), playerNum);        
+			}
+	    }
+	}
+	
+	public function assignTerritory(territoryNum : Int, playerNum : Int)
+	{
+		var territory : Territory = Registry.territoryManager.getTerritory(territoryNum);
+		
+		// If someone already owns this territory
+		if ( territory.ownerNumber > 0 )
+		{
+			var oldOwner : Player = Registry.playerManager.getPlayer(territory.ownerNumber);
+			oldOwner.territories.remove(territoryNum);
+		}
+			
+		// We now assign to the new owner
+		territory.ownerNumber = playerNum;
+		var newOwner: Player = Registry.playerManager.getPlayer(playerNum);
+		newOwner.territories.push(territoryNum);
+		
+	    for ( tMember in territory.members )
+		{
+			var member : HexaTile = tMember;
+			if ( member != null )
+			{
+				member.sprite.alpha._ = Registry.playerManager.getPlayer(playerNum).territoryColor;
+				//member.setCoverColorTo(Registry.playerManager.getPlayer(playerNum).territoryColor);
+				//member.drawBoundaries(Registry.playerManager.getPlayer(playerNum).territoryColor);
+			}
+		}
 	}
 	
 	function setupTerritories() 
@@ -218,6 +276,29 @@ class PlayArea extends Component
 			markMainBase(currentHexaTile, centerBaseList);
 		}
 		
+		function setTerritoryNeighbor(hexaTile : HexaTile)
+		{
+			function checkNeighbor(neighborToCheck : HexaTile)
+			{
+				if ( neighborToCheck == null || !neighborToCheck.isATerritory )
+					return;
+				
+				if ( neighborToCheck.territoryNumber != hexaTile.territoryNumber )
+				{
+					var neighborList : Array<Int> = Registry.territoryManager.getTerritory(hexaTile.territoryNumber).neighbors;
+					if ( !Lambda.has(neighborList, neighborToCheck.territoryNumber))
+						neighborList.push(neighborToCheck.territoryNumber);
+				}
+			}
+			
+			checkNeighbor(hexaTile.top);	
+			checkNeighbor(hexaTile.topRight);
+			checkNeighbor(hexaTile.bottomRight);
+			checkNeighbor(hexaTile.bottom);
+			checkNeighbor(hexaTile.bottomLeft);
+			checkNeighbor(hexaTile.topLeft);
+		}
+		
 		// We initialize the territories
 		for (row in 1...(Math.floor(playAreaRows/5) + 1))
 		{
@@ -235,6 +316,45 @@ class PlayArea extends Component
 			currentTerritoryNumber = count;
 			expandBase(centerBase);
 			count++;
+		}
+		
+		// We group the territories		
+		// We create the territory list
+		for ( i in 0...Registry.maxTerritories )
+		{
+			var territory : Territory = new Territory();
+			territory.initialize(i);
+			Registry.territoryManager.territoryList.push(territory);
+		}
+		
+		for ( row in 0...playAreaRows+1)
+		{
+			for ( col in 0...playAreaCols+1)
+			{
+				var hexaTile : HexaTile = playAreaArray[col][row];
+				if (hexaTile != null)
+				{
+					// We turn non territories to sea tiles
+					if ( !hexaTile.isATerritory )
+						hexaTile.sprite.visible = false;
+						//hexaTile.kill();
+						//hexaTile.turnToSeaTile();
+					else
+					{						
+						var currentTerritory : Territory = Registry.territoryManager.getTerritory(hexaTile.territoryNumber);
+						currentTerritory.members.push(hexaTile);
+						
+						// We set the neighboring territories
+						setTerritoryNeighbor(hexaTile);
+					}
+				}
+			}
+		}
+		
+		for ( tCenter in centerBaseList )
+		{
+			var center : HexaTile = tCenter;
+			Registry.territoryManager.getTerritory(center.territoryNumber).centerTile = center;
 		}
 	}
 	

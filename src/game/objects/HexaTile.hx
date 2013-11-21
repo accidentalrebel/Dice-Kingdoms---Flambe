@@ -16,7 +16,7 @@ class HexaTile extends Component
 	public static var tileWidth : Int = 22;
 	public static var tileHeight : Int = 20;
 	
-	var sprite : ImageSprite;
+	public var sprite : ImageSprite;
 	var col:Int = 0;
 	var row:Int = 0;
 	var label : TextSprite;
