@@ -10,6 +10,9 @@ import game.Registry;
  */
 class HexaTile extends Component
 {
+	public static var tileWidth : Int = 22;
+	public static var tileHeight : Int = 20;
+	
 	var sprite : ImageSprite;
 	var col:Int = 0;
 	var row:Int = 0;
@@ -30,5 +33,17 @@ class HexaTile extends Component
 		
 		sprite = new ImageSprite(Registry.pack.getTexture("hexaTile"));
 		owner.add(sprite);
+		
+		var xPos = 0.0;
+		var yPos = 0.0;
+		var hexaSpacingX : Float = (tileWidth / 4);
+      
+		xPos = col * ( tileWidth - hexaSpacingX + 1.5);
+		if ( col % 2 == 0 )
+			yPos = row * tileHeight + (tileHeight / 2) - 1;			
+		else
+			yPos = row * tileHeight - 1;
+		
+		sprite.setXY(xPos + Registry.playAreaPadding.x, yPos + Registry.playAreaPadding.y);		
 	}
 }

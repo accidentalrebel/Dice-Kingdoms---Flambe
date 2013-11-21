@@ -23,7 +23,7 @@ class PlayArea extends Component
 		
 		playAreaArray = new Array<Array<HexaTile>>();
 		
-		// We create the hexaTiles
+		// We create the hexaTiles and arrange their positions
 		for ( col in 0...playAreaCols+1 )
 		{
 			var rowArray : Array<HexaTile> = new Array<HexaTile>();
