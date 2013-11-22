@@ -1,5 +1,6 @@
 package game.objects;
 import flambe.Component;
+import game.tools.ArrayTools;
 
 /**
  * ...
@@ -30,4 +31,20 @@ class Player extends Component
 		this.territories = new Array<Int>();
 	}
 	
+	public function randomlyAssignArmies(maxArmyCount:Int) 
+	{
+		var territoryListCopy : Array<Int> = ArrayTools.hardCopyArray(territories);
+		
+		while ( maxArmyCount > 0 && territoryListCopy.length > 0)
+		{
+			var roll : Int = Std.random(territoryListCopy.length);
+			var territoryNum : Int = territoryListCopy[roll];
+			var territory : Territory = Registry.territoryManager.getTerritory(territoryNum);
+			
+			if ( territory.increaseArmyCount() )
+				maxArmyCount--;
+			else
+				territoryListCopy.remove(territoryNum);
+		}
+	}
 }

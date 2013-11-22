@@ -26,5 +26,6 @@ class Game extends Component
 		owner.addChild(new Entity().add(Registry.playArea = new PlayArea()));
 		Registry.playerManager.initialize();
 		Registry.playArea.assignTerritories();
+		Registry.playerManager.initializeArmies();
 	}
 }

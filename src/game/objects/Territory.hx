@@ -1,5 +1,6 @@
 package game.objects;
 import flambe.Component;
+import game.Registry;
 
 /**
  * ...
@@ -25,5 +26,28 @@ class Territory extends Component
 		this.territoryNumber = territoryNumber;
 		neighbors = new Array<Int>();
 		members = new Array<HexaTile>();
+	}
+	
+	public function setArmyCount(count:Int) 
+	{
+		if ( centerTile == null )
+		{
+			trace("CENTER TILE IS NOT INITIALIZED");
+			return;
+		}
+		
+		armyCount = count;
+		centerTile.updateLabel(Std.string(count));
+	}
+	
+	public function increaseArmyCount(amount : Int = 1) : Bool
+	{
+		if ( armyCount + amount > Registry.maxArmyCountPerTerritory )
+			return false;
+		
+		armyCount += amount;
+		setArmyCount(armyCount);
+		
+		return true;
 	}
 }

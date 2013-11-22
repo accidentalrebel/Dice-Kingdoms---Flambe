@@ -15,6 +15,9 @@ class Registry
 	public static var colorList : Array<String> = [ "red", "blue", "green", "yellow", "white", "black", "pink", "lightBlue" ];		
 	public static var maxTerritories : Int = Math.floor(PlayArea.playAreaRows / 5) * Math.floor(PlayArea.playAreaCols / 5);	
 	static public var territoryPerPlayer:Int;
+
+	static public var initialArmyCount:Int = 20;
+	static public var maxArmyCountPerTerritory : Int = 8;
 	
 	static public var pack:AssetPack;
 	static public var playAreaPadding : Point = new Point(15, 15);

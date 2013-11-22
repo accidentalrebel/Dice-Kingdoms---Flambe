@@ -78,11 +78,16 @@ class HexaTile extends Component
 		
 		label.setXY(sprite.x._, sprite.y._);
 		owner.addChild(new Entity().add(label));
-		//updateLabel(textToDisplay);
+		updateLabel(textToDisplay);
 	}
 	
 	public function setCoverColorTo(colorToUse : String) 
 	{
 		coverGraphic.texture = Registry.pack.getTexture("hexaTiles/hexaTile-" + colorToUse);
+	}
+	
+	public function updateLabel(text : String) 
+	{
+		label.text = text;
 	}
 }

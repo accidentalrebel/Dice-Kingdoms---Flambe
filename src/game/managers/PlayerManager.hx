@@ -1,6 +1,7 @@
 package game.managers;
 import flambe.Component;
 import game.objects.Player;
+import game.Registry;
 
 /**
  * ...
@@ -45,6 +46,15 @@ class PlayerManager extends Component
 	public function getPlayer(playerNum : Int) 
 	{
 		return playerList[playerNum-1];
+	}
+	
+	public function initializeArmies() 
+	{
+		for ( tPlayer in playerList )
+		{
+			var player : Player = tPlayer;
+			player.randomlyAssignArmies(Registry.initialArmyCount - Registry.territoryPerPlayer);			
+		}
 	}
 	
 	private function setCurrentPlayer(playerNumber:Int) 
