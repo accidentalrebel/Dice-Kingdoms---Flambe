@@ -17,6 +17,8 @@ class HexaTile extends Component
 	public static var tileHeight : Int = 20;
 	
 	public var sprite : ImageSprite;
+	var coverGraphic:ImageSprite;
+	
 	var col:Int = 0;
 	var row:Int = 0;
 	var label : TextSprite;
@@ -49,7 +51,7 @@ class HexaTile extends Component
 		this.col = col;
 		this.row = row;
 		
-		sprite = new ImageSprite(Registry.pack.getTexture("hexaTiles/hexaTile"));
+		sprite = new ImageSprite(Registry.pack.getTexture("hexaTiles/terrain/hexaLand"));
 		owner.addChild(new Entity().add(sprite));
 		
 		var xPos = 0.0;
@@ -62,18 +64,17 @@ class HexaTile extends Component
 		else
 			yPos = row * tileHeight - 1;
 		
-		sprite.setXY(xPos + Registry.playAreaPadding.x, yPos + Registry.playAreaPadding.y);		
+		sprite.setXY(xPos + Registry.playAreaPadding.x, yPos + Registry.playAreaPadding.y);
+		
+		coverGraphic = new ImageSprite(Registry.pack.getTexture("hexaTiles/hexaTile"));
+		coverGraphic.alpha._ = 0.5;
+		sprite.owner.addChild(new Entity().add(coverGraphic));
 	}
 	
 	public function setupLabel(textToDisplay : String)
 	{
 		label = new TextSprite(new Font(Registry.pack, "fonts/AdventureSubtitles"), textToDisplay);
 		label.setScale(0.4);
-		
-		//, this.x, this.y, 30);
-		//label.alignment = "center";
-		//label.size = 20;
-		//label.color = 0x000000;
 		
 		label.setXY(sprite.x._, sprite.y._);
 		owner.addChild(new Entity().add(label));
@@ -82,6 +83,6 @@ class HexaTile extends Component
 	
 	public function setCoverColorTo(colorToUse : String) 
 	{
-		sprite.texture = Registry.pack.getTexture("hexaTiles/hexaTile-" + colorToUse);
+		coverGraphic.texture = Registry.pack.getTexture("hexaTiles/hexaTile-" + colorToUse);
 	}
 }
