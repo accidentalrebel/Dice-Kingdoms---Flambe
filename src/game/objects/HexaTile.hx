@@ -52,6 +52,7 @@ class HexaTile extends Component
 		this.row = row;
 		
 		sprite = new ImageSprite(Registry.pack.getTexture("hexaTiles/terrain/hexaLand"));
+		sprite.centerAnchor();
 		owner.addChild(new Entity().add(sprite));
 		
 		var xPos = 0.0;
@@ -76,8 +77,9 @@ class HexaTile extends Component
 		label = new TextSprite(new Font(Registry.pack, "fonts/AdventureSubtitles"), textToDisplay);
 		label.setScale(0.4);
 		
-		label.setXY(sprite.x._, sprite.y._);
-		owner.addChild(new Entity().add(label));
+		//label.setXY(sprite.x._, sprite.y._);
+		//TODO: Add to GUI layer?
+		sprite.owner.addChild(new Entity().add(label));
 		updateLabel(textToDisplay);
 	}
 	
