@@ -40,7 +40,7 @@ class GameplayManager extends Component
 				// We check if what we clicked is a neighbor of the selected territory 
 				if ( Registry.territoryManager.getTerritory(selectedTerritory).checkIfEnemyNeighbor(clickedTile.territoryNumber) )
 				{
-					//BattleManager.startAttack(selectedTerritory, clickedTile.territoryNumber);
+					Registry.battleManager.startAttack(selectedTerritory, clickedTile.territoryNumber);
 					selectedTerritory = Registry.playArea.deselectTerritory(selectedTerritory);					
 				}
 				// We check if we clicked the same territory

@@ -1,6 +1,7 @@
 package game;
 import flambe.asset.AssetPack;
 import flambe.math.Point;
+import game.managers.BattleManager;
 import game.managers.GameplayManager;
 import game.managers.InputManager;
 import game.managers.PlayerManager;
@@ -27,4 +28,5 @@ class Registry
 	static public var territoryManager:TerritoryManager;
 	static public var playArea:PlayArea;
 	static public var gameplayManager : GameplayManager;
+	static public var battleManager : BattleManager;
 }

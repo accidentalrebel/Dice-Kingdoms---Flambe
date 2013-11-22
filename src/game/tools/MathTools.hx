@@ -18,4 +18,9 @@ class MathTools
 	{
 		return Math.sqrt(dx * dx + dy * dy);
 	}
+	
+	public static function randomMinMax(minValue : Int, maxValue : Int) : Int
+	{
+		return Std.int(minValue + Math.round((Math.random() * (maxValue - minValue))));
+	}
 }

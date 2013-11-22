@@ -1,6 +1,7 @@
 package game;
 import flambe.Component;
 import flambe.Entity;
+import game.managers.BattleManager;
 import game.managers.GameplayManager;
 import game.managers.InputManager;
 import game.managers.PlayerManager;
@@ -21,6 +22,7 @@ class Game extends Component
 	{
 		super.onAdded();
 		owner.add(Registry.gameplayManager = new GameplayManager());
+		owner.add(Registry.battleManager = new BattleManager());
 		owner.add(Registry.inputManager = new InputManager());
 		owner.add(Registry.playerManager = new PlayerManager());
 		owner.add(Registry.territoryManager = new TerritoryManager());
