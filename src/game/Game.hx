@@ -1,6 +1,7 @@
 package game;
 import flambe.Component;
 import flambe.Entity;
+import game.managers.GameplayManager;
 import game.managers.InputManager;
 import game.managers.PlayerManager;
 import game.managers.TerritoryManager;
@@ -19,6 +20,7 @@ class Game extends Component
 	override public function onAdded()
 	{
 		super.onAdded();
+		owner.add(Registry.gameplayManager = new GameplayManager());
 		owner.add(Registry.inputManager = new InputManager());
 		owner.add(Registry.playerManager = new PlayerManager());
 		owner.add(Registry.territoryManager = new TerritoryManager());
@@ -27,5 +29,7 @@ class Game extends Component
 		Registry.playerManager.initialize();
 		Registry.playArea.assignTerritories();
 		Registry.playerManager.initializeArmies();
+		
+		//CameraManager.focusOnRandomTerritory(PlayerManager.currentPlayerNumber);
 	}
 }

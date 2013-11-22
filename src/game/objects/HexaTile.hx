@@ -90,4 +90,13 @@ class HexaTile extends Component
 	{
 		label.text = text;
 	}
+	
+	public function checkIfClicked(xPos:Float, yPos:Float)
+	{
+		if ( xPos >= sprite.x._ && xPos <= sprite.x._ + sprite.getNaturalWidth() 
+			&& yPos >= sprite.y._ && yPos <= sprite.y._ + sprite.getNaturalHeight() )
+			return true;
+			
+		return false;
+	}
 }

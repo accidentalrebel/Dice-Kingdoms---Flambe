@@ -50,4 +50,65 @@ class Territory extends Component
 		
 		return true;
 	}
+	
+	public function highlightNeighbors() 
+	{
+		for ( tNeighborNum in neighbors )
+		{
+			var neighborNum : Int = tNeighborNum;
+			if ( Registry.territoryManager.getTerritory(neighborNum).ownerNumber == ownerNumber )
+				continue;
+			
+			Registry.territoryManager.getTerritory(neighborNum).select(true);
+		}
+	}
+	
+	public function unhighlightNeighbors() 
+	{
+		for ( tNeighborNum in neighbors )
+		{
+			var neighborNum : Int = tNeighborNum;
+			Registry.territoryManager.getTerritory(neighborNum).deselect(true);
+		}
+	}
+	
+	public function checkIfEnemyNeighbor(territoryNumber:Int) 
+	{
+		if ( Registry.territoryManager.getTerritory(territoryNumber).ownerNumber == ownerNumber )
+			return false;
+			
+		return Lambda.has(neighbors, territoryNumber);
+	}
+	
+	public function select(isNeighborSelect : Bool = false) 
+	{
+		for ( tHexaTile in members )
+		{
+			var hexaTile : HexaTile = tHexaTile;
+			
+			if ( isNeighborSelect )
+				hexaTile.sprite.scaleX._ = 0.5;
+			else
+			{
+				hexaTile.sprite.rotation._ = 90;
+				hexaTile.sprite.scaleX._ = 0.5;
+			}
+		}
+	}
+	
+	public function deselect(isNeighborDeselect : Bool = false)
+	{
+		for ( tHexaTile in members )
+		{
+			var hexaTile : HexaTile = tHexaTile;
+			
+			if ( isNeighborDeselect )
+				hexaTile.sprite.scaleX._ = 1;
+			else
+			{
+				hexaTile.sprite.rotation._ = 0;
+				hexaTile.sprite.scaleX._ = 1;
+			}
+		}
+	}
 }

@@ -145,6 +145,36 @@ class PlayArea extends Component
 		}
 	}
 	
+	public function selectTerritory(clickedTerritory : Territory, neighborSelect : Bool = false) : Int
+	{	
+		clickedTerritory.select(neighborSelect);
+		return clickedTerritory.territoryNumber;
+	}
+	
+	public function deselectTerritory(thisTerritory : Int) : Int
+	{
+		var toDeselect : Territory = Registry.territoryManager.getTerritory(thisTerritory);
+		toDeselect.deselect();
+		toDeselect.unhighlightNeighbors();
+		
+		return -1;
+	}
+	
+	public function checkForClickedTiles(xPos:Float, yPos:Float) 
+	{
+		for ( col in 0...playAreaCols+1 )
+		{
+			for ( row in 0...playAreaRows+1 )
+			{
+				var hexaTile : HexaTile = playAreaArray[col][row];
+				if ( hexaTile.checkIfClicked(xPos, yPos) )
+					return hexaTile;
+			}
+		}
+		
+		return null;
+	}
+	
 	function setupTerritories() 
 	{
 		var centerBaseList : Array<HexaTile> = new Array<HexaTile>();
