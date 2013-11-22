@@ -64,4 +64,18 @@ class GameplayManager extends Component
 			}
 		}
 	}
+	
+	public function nextPlayer() 
+	{
+		Registry.playerManager.nextPlayer();
+		
+		trace("Current player is human: " + Registry.playerManager.currentPlayer.isHuman);
+		if ( Registry.playerManager.currentPlayer.isHuman )
+		{
+			//CameraManager.zoomIn();
+			//CameraManager.focusOnRandomTerritory(PlayerManager.currentPlayerNumber);
+		}
+		//else
+			//CameraManager.zoomOut();			
+	}
 }

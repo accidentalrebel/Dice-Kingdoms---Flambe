@@ -1,5 +1,7 @@
 package game.managers;
 import flambe.Component;
+import flambe.input.Key;
+import flambe.input.KeyboardEvent;
 import flambe.input.PointerEvent;
 import flambe.input.TouchPoint;
 import flambe.math.Point;
@@ -23,6 +25,15 @@ class InputManager extends Component
 	{
 		System.pointer.down.connect(onTouchDown);
 		System.pointer.up.connect(onTouchUp);
+		System.keyboard.down.connect(onKeyDown);
+	}
+	
+	function onKeyDown(keyboardEvent : KeyboardEvent) 
+	{
+		if ( keyboardEvent.key == Key.N )
+		{
+			Registry.gameplayManager.nextPlayer();
+		}
 	}
 	
 	function onTouchDown(touchPoint : PointerEvent) 

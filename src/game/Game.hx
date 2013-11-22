@@ -1,6 +1,7 @@
 package game;
 import flambe.Component;
 import flambe.Entity;
+import game.gui.GUILayer;
 import game.managers.BattleManager;
 import game.managers.GameplayManager;
 import game.managers.InputManager;
@@ -33,5 +34,6 @@ class Game extends Component
 		Registry.playerManager.initializeArmies();
 		
 		//CameraManager.focusOnRandomTerritory(PlayerManager.currentPlayerNumber);
+		owner.addChild(new Entity().add(Registry.guiLayer = new GUILayer()));
 	}
 }

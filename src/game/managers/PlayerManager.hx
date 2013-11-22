@@ -57,6 +57,24 @@ class PlayerManager extends Component
 		}
 	}
 	
+	public function nextPlayer() 
+	{
+		// We add armies according to the number of territories
+		currentPlayer.randomlyAssignArmies(currentPlayer.territories.length);
+		
+		// We then increase our playerNumber
+		currentPlayerNumber += 1;
+		if ( currentPlayerNumber >= numOfPlayers )
+			currentPlayerNumber = 1;			
+		
+		// We then set the current player
+		setCurrentPlayer(currentPlayerNumber);
+		
+		// We then determine if AI would take over
+		//if ( !currentPlayer.isHuman )
+			//currentPlayer.ai.startPlanning();
+	}
+	
 	private function setCurrentPlayer(playerNumber:Int) 
 	{
 		currentPlayerNumber = playerNumber;
