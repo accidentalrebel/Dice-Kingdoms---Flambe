@@ -68,6 +68,7 @@ class GameplayManager extends Component
 	public function nextPlayer() 
 	{
 		Registry.playerManager.nextPlayer();
+		Registry.guiLayer.updatePlayerIndicator();
 		
 		trace("Current player is human: " + Registry.playerManager.currentPlayer.isHuman);
 		if ( Registry.playerManager.currentPlayer.isHuman )
