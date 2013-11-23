@@ -2,6 +2,7 @@ package game;
 import flambe.Component;
 import flambe.Entity;
 import game.gui.GUILayer;
+import game.layers.Layer;
 import game.managers.BattleManager;
 import game.managers.GameplayManager;
 import game.managers.InputManager;
@@ -22,18 +23,27 @@ class Game extends Component
 	override public function onAdded()
 	{
 		super.onAdded();
+		
+		
+		// We create the managers
 		owner.add(Registry.gameplayManager = new GameplayManager());
 		owner.add(Registry.battleManager = new BattleManager());
 		owner.add(Registry.inputManager = new InputManager());
 		owner.add(Registry.playerManager = new PlayerManager());
 		owner.add(Registry.territoryManager = new TerritoryManager());
 		
+		// We create the layers
+		owner.addChild(new Entity().add(Registry.gameLayer = new Layer()));
+		owner.addChild(new Entity().add(Registry.guiLayer = new GUILayer()));
+		
+		// We initialize the playareas and players
 		owner.addChild(new Entity().add(Registry.playArea = new PlayArea()));
 		Registry.playerManager.initialize();
 		Registry.playArea.assignTerritories();
 		Registry.playerManager.initializeArmies();
 		
 		//CameraManager.focusOnRandomTerritory(PlayerManager.currentPlayerNumber);
-		owner.addChild(new Entity().add(Registry.guiLayer = new GUILayer()));
+		
+		Registry.gameLayer.sprite.setXY(400, 0);
 	}
 }

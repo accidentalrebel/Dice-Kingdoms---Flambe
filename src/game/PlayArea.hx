@@ -35,7 +35,7 @@ class PlayArea extends Component
 			for ( row in 0...playAreaRows+1 )
 			{
 				var hexaTile : HexaTile;
-				owner.addChild(new Entity().add(hexaTile = new HexaTile()));
+				Registry.gameLayer.owner.addChild(new Entity().add(hexaTile = new HexaTile()));
 				hexaTile.initialize(col, row);
 				playAreaArray[col].push(hexaTile);
 			}
