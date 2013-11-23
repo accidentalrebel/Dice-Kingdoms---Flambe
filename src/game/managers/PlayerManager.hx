@@ -1,5 +1,6 @@
 package game.managers;
 import flambe.Component;
+import game.ai.EnemyAI;
 import game.objects.Player;
 import game.Registry;
 
@@ -71,8 +72,8 @@ class PlayerManager extends Component
 		setCurrentPlayer(currentPlayerNumber);
 		
 		// We then determine if AI would take over
-		//if ( !currentPlayer.isHuman )
-			//currentPlayer.ai.startPlanning();
+		if ( !currentPlayer.isHuman )
+			currentPlayer.ai.startPlanning();
 	}
 	
 	private function setCurrentPlayer(playerNumber:Int) 

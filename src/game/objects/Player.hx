@@ -1,5 +1,7 @@
 package game.objects;
 import flambe.Component;
+import flambe.Entity;
+import game.ai.EnemyAI;
 import game.tools.ArrayTools;
 
 /**
@@ -11,7 +13,7 @@ class Player extends Component
 	public var territories:Array<Int>;
 	public var territoryColor:String;
 	public var isHuman:Bool = false;
-	//public var ai:EnemyAI;	
+	public var ai:EnemyAI;	
 	public var playerNum:Int;
 
 	public function new() 
@@ -24,8 +26,11 @@ class Player extends Component
 		this.playerNum = playerNum;
 		this.isHuman = isHuman;
 		
-		//if ( !this.isHuman )
-			//this.ai = new EnemyAI(this);
+		if ( !this.isHuman )
+		{
+			this.ai = new EnemyAI();
+			owner.addChild(new Entity().add(this.ai));
+		}
 		
 		this.territoryColor = Registry.colorList[playerNum-1];
 		this.territories = new Array<Int>();
