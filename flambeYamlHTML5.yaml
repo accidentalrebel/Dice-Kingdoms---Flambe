@@ -20,7 +20,7 @@ default_platform: html
 #   web: ["dir1 with spaces", "dir2"]
 
 # The initial orientation and fullscreen state
-orientation: portrait
+orientation: landscape
 fullscreen: true
 
 # Android-specific configuration

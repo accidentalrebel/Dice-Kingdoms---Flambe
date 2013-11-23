@@ -17,7 +17,7 @@ class HexaTile extends Component
 	public static var tileHeight : Int = 20;
 	
 	public var sprite : ImageSprite;
-	//var coverGraphic:ImageSprite;
+	var coverGraphic:ImageSprite;
 	
 	var col:Int = 0;
 	var row:Int = 0;
@@ -67,9 +67,9 @@ class HexaTile extends Component
 		
 		sprite.setXY(xPos + Registry.playAreaPadding.x, yPos + Registry.playAreaPadding.y);
 		
-		//coverGraphic = new ImageSprite(Registry.pack.getTexture("hexaTiles/hexaTile"));
-		//coverGraphic.alpha._ = 0.5;
-		//sprite.owner.addChild(new Entity().add(coverGraphic));
+		coverGraphic = new ImageSprite(Registry.pack.getTexture("hexaTiles/hexaTile"));
+		coverGraphic.alpha._ = 0.5;
+		sprite.owner.addChild(new Entity().add(coverGraphic));
 	}
 	
 	public function setupLabel(textToDisplay : String)
@@ -85,7 +85,7 @@ class HexaTile extends Component
 	
 	public function setCoverColorTo(colorToUse : String) 
 	{
-		sprite.texture = Registry.pack.getTexture("hexaTiles/hexaTile-" + colorToUse);
+		coverGraphic.texture = Registry.pack.getTexture("hexaTiles/hexaTile-" + colorToUse);
 	}
 	
 	public function updateLabel(text : String) 
