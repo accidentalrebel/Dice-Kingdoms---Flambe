@@ -30,6 +30,7 @@ class Player extends Component
 		{
 			this.ai = new EnemyAI();
 			owner.addChild(new Entity().add(this.ai));
+			this.ai.initialize();
 		}
 		
 		this.territoryColor = Registry.colorList[playerNum-1];

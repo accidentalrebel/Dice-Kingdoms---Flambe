@@ -1,5 +1,6 @@
 package game.managers;
 import flambe.Component;
+import flambe.Entity;
 import game.ai.EnemyAI;
 import game.objects.Player;
 import game.Registry;
@@ -35,6 +36,7 @@ class PlayerManager extends Component
 				isHuman = true;
 			
 			var player : Player = new Player();
+			owner.addChild(new Entity().add(player));
 			player.initialize(i, isHuman);
 			playerList.push(player);
 			
