@@ -4,6 +4,7 @@ import flambe.display.Font;
 import flambe.display.TextSprite;
 import flambe.Entity;
 import game.layers.Layer;
+import game.objects.Territory;
 import game.Registry;
 
 /**

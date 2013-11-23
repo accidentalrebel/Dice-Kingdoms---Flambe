@@ -1,7 +1,16 @@
 package game.ai;
 import flambe.Component;
+import flambe.script.CallFunction;
+import flambe.script.Delay;
+import flambe.script.Script;
+import flambe.script.Sequence;
 import game.ai.EnemyAI.AIType;
+import game.managers.GameplayManager;
 import game.objects.Player;
+import game.objects.Territory;
+import game.Registry;
+import game.tools.CallFunction1;
+import game.tools.CallFunction2;
 
 /**
  * ...
@@ -35,7 +44,104 @@ class EnemyAI extends Component
 	
 	public function startPlanning()
 	{
-	
+		trace("AI is taking over");
+		
+		function getAvailableTerritories() : Null<Territory>
+		{
+			// We loop through each territory
+			for ( tTerritory in playerScript.territories )
+			{ 
+				var territory : Territory = Registry.territoryManager.getTerritory(tTerritory);
+				if ( territory.armyCount > 1
+					&& territory.ownerNumber == playerScript.playerNum 
+					&& territory.neighbors.length >= 1
+					&& territory.markAsChecked == false )
+					{
+						if ( aiType == AIType.DEFENSIVE 		// If the AI is defensive
+							&& territory.armyCount < 7 )		// And the territory does not meet the army requirement
+							continue;
+							
+						return territory;
+					}
+			}
+			
+			// We did not get any territories
+			return null;
+		}
+		
+		function endMove()
+		{
+			// We loop through each territory and mark each territory as unchecked
+			for ( tTerritory in playerScript.territories )
+			{ 
+				var territory : Territory = Registry.territoryManager.getTerritory(tTerritory);
+				territory.markAsChecked = false;
+			}
+			
+			// We then go to the next player
+			Registry.gameplayManager.nextPlayer();
+		}
+		
+		function getNextMove()
+		{
+			var sequence : Sequence = null;
+			var territory : Null<Territory> = getAvailableTerritories();
+			
+			// If no territory is availble, we now end our turn
+			if ( territory == null )
+			{
+				trace("Did not get any territories, going to the next player");
+				endMove();
+				return;
+			}
+				
+			// We go through each neighbors
+			// TODO: Pick a random neighbor instead of picking the first one on the list
+			for ( tNeighbor in territory.neighbors )
+			{
+				var neighborTerritory : Territory = Registry.territoryManager.getTerritory(tNeighbor);
+				
+				// If I own this territory
+				if ( neighborTerritory.ownerNumber == territory.ownerNumber )
+					continue;
+				
+				if ( ( (aiType == AIType.NORMAL || aiType == AIType.DEFENSIVE )
+						&& territory.armyCount >= neighborTerritory.armyCount )			// If we have equal or more than enemy
+					|| (aiType == AIType.CAUTIOUS 
+						&& territory.armyCount > neighborTerritory.armyCount)			// If we have more army count than enemy
+					|| (aiType == AIType.AGGRESSIVE
+						&& territory.armyCount >= neighborTerritory.armyCount - 1 ))	// If even the enemy has one army more than mine
+				{
+					sequence = new Sequence();
+					
+					sequence.add(new Delay(0.75));
+					
+					// We highlight the attacker and the one being attacked
+					sequence.add(new CallFunction2(Registry.playArea.selectTerritory, territory, false));
+					sequence.add(new CallFunction2(Registry.playArea.selectTerritory, neighborTerritory, true));
+					sequence.add(new Delay(1));
+					
+					// We then start the battle and unhighlight territories
+					sequence.add(new CallFunction2(Registry.battleManager.startAttack, territory.territoryNumber, neighborTerritory.territoryNumber));
+					sequence.add(new CallFunction1(Registry.playArea.deselectTerritory, territory.territoryNumber));
+					sequence.add(new CallFunction1(Registry.playArea.deselectTerritory, neighborTerritory.territoryNumber));
+					break;
+				}
+			}
+			
+			// If there are no neighbors to attack
+			if ( sequence == null )
+			{
+				territory.markAsChecked = true;
+				getNextMove();
+			}
+			
+			// We run the sequence
+			trace("running the sequence");
+			var script : Script = new Script();
+			script.run(sequence);
+		}
+		
+		getNextMove();
 	}
-	
 }
