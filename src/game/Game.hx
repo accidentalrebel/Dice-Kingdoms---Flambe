@@ -24,8 +24,7 @@ class Game extends Component
 	
 	override public function onAdded()
 	{
-		super.onAdded();
-		
+		super.onAdded();		
 		
 		// We create the managers
 		owner.add(Registry.gameplayManager = new GameplayManager());
