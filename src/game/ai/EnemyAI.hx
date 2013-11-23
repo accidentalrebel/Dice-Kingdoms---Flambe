@@ -1,5 +1,6 @@
 package game.ai;
 import flambe.Component;
+import flambe.Entity;
 import flambe.script.CallFunction;
 import flambe.script.Delay;
 import flambe.script.Script;
@@ -25,8 +26,9 @@ enum AIType {
  
 class EnemyAI extends Component
 {
-	var playerScript : Player;
+	var playerComponent : Player;
 	var aiType : AIType;
+	var aiScript:Script;
 
 	public function new() 
 	{
@@ -35,11 +37,14 @@ class EnemyAI extends Component
 	
 	public function initialize()
 	{
-		this.playerScript = this.owner.parent.get(Player);
+		this.playerComponent = this.owner.parent.get(Player);
 		
 		 //We roll for the AI type
 		aiType = Type.createEnumIndex(AIType, Std.int(Math.floor(Math.random() * Type.allEnums(AIType).length)));
 		trace(Std.string(aiType));
+		
+		// We setup the script
+		owner.addChild(new Entity().add(aiScript = new Script()));
 	}
 	
 	public function startPlanning()
@@ -49,11 +54,11 @@ class EnemyAI extends Component
 		function getAvailableTerritories() : Null<Territory>
 		{
 			// We loop through each territory
-			for ( tTerritory in playerScript.territories )
+			for ( tTerritory in playerComponent.territories )
 			{ 
 				var territory : Territory = Registry.territoryManager.getTerritory(tTerritory);
 				if ( territory.armyCount > 1
-					&& territory.ownerNumber == playerScript.playerNum 
+					&& territory.ownerNumber == playerComponent.playerNum 
 					&& territory.neighbors.length >= 1
 					&& territory.markAsChecked == false )
 					{
@@ -72,7 +77,7 @@ class EnemyAI extends Component
 		function endMove()
 		{
 			// We loop through each territory and mark each territory as unchecked
-			for ( tTerritory in playerScript.territories )
+			for ( tTerritory in playerComponent.territories )
 			{ 
 				var territory : Territory = Registry.territoryManager.getTerritory(tTerritory);
 				territory.markAsChecked = false;
@@ -99,12 +104,16 @@ class EnemyAI extends Component
 			// TODO: Pick a random neighbor instead of picking the first one on the list
 			for ( tNeighbor in territory.neighbors )
 			{
+				trace("GOING THROUGH A NEIGHBOR");
+				
 				var neighborTerritory : Territory = Registry.territoryManager.getTerritory(tNeighbor);
 				
 				// If I own this territory
 				if ( neighborTerritory.ownerNumber == territory.ownerNumber )
 					continue;
 				
+				trace("I DO NOT OWN THE TERRITORY. CONTINUING");
+					
 				if ( ( (aiType == AIType.NORMAL || aiType == AIType.DEFENSIVE )
 						&& territory.armyCount >= neighborTerritory.armyCount )			// If we have equal or more than enemy
 					|| (aiType == AIType.CAUTIOUS 
@@ -112,8 +121,9 @@ class EnemyAI extends Component
 					|| (aiType == AIType.AGGRESSIVE
 						&& territory.armyCount >= neighborTerritory.armyCount - 1 ))	// If even the enemy has one army more than mine
 				{
-					sequence = new Sequence();
+					trace("SETTING UP SEQUENCE");
 					
+					sequence = new Sequence();
 					sequence.add(new Delay(0.75));
 					
 					// We highlight the attacker and the one being attacked
@@ -132,14 +142,19 @@ class EnemyAI extends Component
 			// If there are no neighbors to attack
 			if ( sequence == null )
 			{
+				trace("No sequence");
 				territory.markAsChecked = true;
 				getNextMove();
+				return;
 			}
-			
-			// We run the sequence
-			trace("running the sequence");
-			var script : Script = new Script();
-			script.run(sequence);
+			else
+			{
+				sequence.add(new CallFunction(getNextMove));
+				
+				// We run the sequence
+				trace("running the sequence");
+				aiScript.run(sequence);
+			}
 		}
 		
 		getNextMove();
