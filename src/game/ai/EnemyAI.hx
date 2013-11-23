@@ -89,8 +89,13 @@ class EnemyAI extends Component
 		
 		function getNextMove()
 		{
-			var sequence : Sequence = null;
+			//aiScript.stopAll();
+			
+			var sequence : Sequence = new Sequence();
+			var hasTerritoryToAttack : Bool = false;
 			var territory : Null<Territory> = getAvailableTerritories();
+			
+			sequence.add(new Delay(0.75));
 			
 			// If no territory is availble, we now end our turn
 			if ( territory == null )
@@ -123,8 +128,7 @@ class EnemyAI extends Component
 				{
 					trace("SETTING UP SEQUENCE");
 					
-					sequence = new Sequence();
-					sequence.add(new Delay(0.75));
+					hasTerritoryToAttack = true;
 					
 					// We highlight the attacker and the one being attacked
 					sequence.add(new CallFunction2(Registry.playArea.selectTerritory, territory, false));
@@ -140,21 +144,17 @@ class EnemyAI extends Component
 			}
 			
 			// If there are no neighbors to attack
-			if ( sequence == null )
+			if ( !hasTerritoryToAttack )
 			{
-				trace("No sequence");
 				territory.markAsChecked = true;
-				getNextMove();
-				return;
 			}
-			else
-			{
-				sequence.add(new CallFunction(getNextMove));
+			
+			// We run the sequence and once that is done, get the next move
+			sequence.add(new CallFunction(getNextMove));
 				
-				// We run the sequence
-				trace("running the sequence");
-				aiScript.run(sequence);
-			}
+			// We run the sequence
+			trace("running the sequence");
+			aiScript.run(sequence);
 		}
 		
 		getNextMove();
