@@ -3,19 +3,20 @@ import flambe.Component;
 import flambe.display.Font;
 import flambe.display.TextSprite;
 import flambe.Entity;
+import game.layers.Layer;
 import game.Registry;
 
 /**
  * ...
  * @author Karlo
  */
-class GUILayer extends Component
+class GUILayer extends Layer
 {
 	var playerIndicatorSprite:TextSprite;
 	
 	public function new() 
 	{
-		
+		super();
 	}
 	
 	override public function onAdded()
