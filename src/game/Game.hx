@@ -1,7 +1,9 @@
 package game;
 import flambe.Component;
+import flambe.display.Sprite;
 import flambe.Entity;
 import game.gui.GUILayer;
+import game.indigoEngine.IEMainStage;
 import game.layers.Layer;
 import game.managers.BattleManager;
 import game.managers.GameplayManager;
@@ -44,6 +46,6 @@ class Game extends Component
 		
 		//CameraManager.focusOnRandomTerritory(PlayerManager.currentPlayerNumber);
 		
-		Registry.gameLayer.sprite.setXY(400, 0);
+		Registry.gameLayer.centerOnScreen();
 	}
 }
